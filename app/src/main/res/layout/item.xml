@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvEntry"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvEntry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDate"
+        app:layout_constraintEnd_toStartOf="@+id/tvIntervalEntry"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvDate"
+        app:layout_constraintTop_toTopOf="@+id/tvDate" />
+
+    <TextView
+        android:id="@+id/tvIntervalEntry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/tvEntry"
+        app:layout_constraintEnd_toStartOf="@+id/tvIntervalExit"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvEntry"
+        app:layout_constraintTop_toTopOf="@+id/tvEntry" />
+
+    <TextView
+        android:id="@+id/tvIntervalExit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/tvIntervalEntry"
+        app:layout_constraintEnd_toStartOf="@+id/tvExit"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvIntervalEntry"
+        app:layout_constraintTop_toTopOf="@+id/tvIntervalEntry" />
+
+    <TextView
+        android:id="@+id/tvExit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/tvIntervalExit"
+        app:layout_constraintEnd_toStartOf="@+id/tvBalance"
+        app:layout_constraintStart_toEndOf="@+id/tvIntervalExit"
+        app:layout_constraintTop_toTopOf="@+id/tvIntervalExit" />
+
+    <TextView
+        android:id="@+id/tvBalance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/tvExit"
+        app:layout_constraintEnd_toStartOf="@+id/tvTotal"
+        app:layout_constraintStart_toEndOf="@+id/tvExit"
+        app:layout_constraintTop_toTopOf="@+id/tvExit" />
+
+    <TextView
+        android:id="@+id/tvTotal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBalance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvBalance"
+        app:layout_constraintTop_toTopOf="@+id/tvBalance" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

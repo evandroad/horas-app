@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screens.MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/myToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="Horas"
+                app:titleTextColor="#fff" />
+
+            <TextView
+                android:id="@+id/tvMainDate"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/add"
+        app:cornerRadius="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/list_records"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLessMonth" />
+
+    <ListView
+        android:id="@+id/list_records"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="45dp"
+        android:text="@string/overtime"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView10"
+        app:layout_constraintEnd_toStartOf="@+id/tvOvertime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvOvertime"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintEnd_toStartOf="@+id/textView8"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/hoursLess"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tvOvertime"
+        app:layout_constraintEnd_toStartOf="@+id/tvHourLess"
+        app:layout_constraintStart_toEndOf="@+id/tvOvertime"
+        app:layout_constraintTop_toTopOf="@+id/tvOvertime" />
+
+    <TextView
+        android:id="@+id/tvHourLess"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/balanceMonth"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvDayWeek"
+        app:layout_constraintEnd_toStartOf="@+id/tvBalanceMonth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/tvBalanceMonth"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView10"
+        app:layout_constraintEnd_toStartOf="@+id/textView12"
+        app:layout_constraintStart_toEndOf="@+id/textView10"
+        app:layout_constraintTop_toTopOf="@+id/textView10" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/totalMonth"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBalanceMonth"
+        app:layout_constraintEnd_toStartOf="@+id/tvTotalMonth"
+        app:layout_constraintStart_toEndOf="@+id/tvBalanceMonth"
+        app:layout_constraintTop_toTopOf="@+id/tvBalanceMonth" />
+
+    <TextView
+        android:id="@+id/tvTotalMonth"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/tvDayWeek"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/tvMonthYear"
+        app:layout_constraintEnd_toStartOf="@+id/btnLessDay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <Button
+        android:id="@+id/btnLessDay"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        app:cornerRadius="25dp"
+        app:icon="@android:drawable/ic_media_rew"
+        app:iconGravity="textTop"
+        app:iconPadding="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDayWeek"
+        app:layout_constraintEnd_toStartOf="@+id/btnMoreDay"
+        app:layout_constraintStart_toEndOf="@+id/tvDayWeek"
+        app:layout_constraintTop_toTopOf="@+id/tvDayWeek" />
+
+    <Button
+        android:id="@+id/btnMoreDay"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        app:cornerRadius="25dp"
+        app:icon="@android:drawable/ic_media_ff"
+        app:iconGravity="textTop"
+        app:iconPadding="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnLessDay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnLessDay"
+        app:layout_constraintTop_toTopOf="@+id/btnLessDay" />
+
+    <Button
+        android:id="@+id/btnLessMonth"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:cornerRadius="25dp"
+        app:icon="@android:drawable/ic_media_rew"
+        app:iconGravity="textTop"
+        app:iconPadding="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvMonthYear"
+        app:layout_constraintEnd_toStartOf="@+id/btnMoreMonth"
+        app:layout_constraintStart_toEndOf="@+id/tvMonthYear"
+        app:layout_constraintTop_toTopOf="@+id/tvMonthYear" />
+
+    <Button
+        android:id="@+id/btnMoreMonth"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        app:cornerRadius="25dp"
+        app:icon="@android:drawable/ic_media_ff"
+        app:iconGravity="textTop"
+        app:iconPadding="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnLessMonth"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnLessMonth"
+        app:layout_constraintTop_toTopOf="@+id/btnLessMonth" />
+
+    <TextView
+        android:id="@+id/tvMonthYear"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/btnAdd"
+        app:layout_constraintEnd_toStartOf="@+id/btnLessMonth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDayWeek" />
+</androidx.constraintlayout.widget.ConstraintLayout>
