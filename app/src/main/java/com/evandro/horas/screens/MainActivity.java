@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         tvMonthYear.setText(TimeUtils.getMonthYearString(tvMainDate.getText().toString()));
         tvDayWeek.setText(TimeUtils.getDayWeekString(tvMainDate.getText().toString()));
 
-        fillTable();
-
         JsonUtils.createNewFile(this, TimeUtils.getDate());
+
+        fillTable();
 
         tvMainDate.setOnClickListener(v -> {
             tvMainDate.setText(TimeUtils.getDate());
@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         String fileContent = JsonUtils.getJsonString(this, date);
         records = gson.fromJson(fileContent, Records.class);
 
+
         for (int i = 0; i < records.getRecords().size(); i++) {
             int comparison = TimeUtils.compareTo(records.getRecords().get(i).getDate(), date);
             if(comparison == 1) {
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         int b, ot = 0, hl = 0, bm = 0, t = 0;
-        //if(r.getr.getEntry().e, r.getIntervalEntry(), r.getIntervalExit(), r.getExit())
+
         for(Register r : records.getRecords()) {
             if(r.getEntry().equals("") || r.getIntervalEntry().equals("") || r.getIntervalExit().equals("")
                     || r.getExit().equals("")) {
@@ -215,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
         Intent it = new Intent(this, RegistrationActivity.class);
         it.putExtra("date", date);
         startActivity(it);
+        finish();
     }
 
     private String getDate() {

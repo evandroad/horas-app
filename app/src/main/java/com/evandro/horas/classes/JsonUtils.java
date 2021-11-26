@@ -14,6 +14,7 @@ import java.io.IOException;
 
 public class JsonUtils {
 
+    private static String filePath = "horas";
     private static String fileName = "";
     private static String fileContent = "";
 
@@ -23,7 +24,7 @@ public class JsonUtils {
         fileName = TimeUtils.getMonthYearDate(date) + ".json";
         fileContent = "";
 
-        File evandro = new File(context.getFilesDir(), fileName);
+        File evandro = new File(context.getExternalFilesDir(filePath), fileName);
         try {
             is = new FileInputStream(evandro);
             fileContent = IOUtils.toString(is);
@@ -60,15 +61,8 @@ public class JsonUtils {
 
         fileContent = "{\"records\": [" + fileContent + "]}";
 
-        File file = new File(context.getFilesDir(), fileName);
-        FileWriter writer;
-        try {
-            writer = new FileWriter(file);
-            writer.write(fileContent);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        File file = new File(context.getExternalFilesDir(filePath), fileName);
+        writeFile(file, fileContent);
 
     }
 
@@ -77,19 +71,28 @@ public class JsonUtils {
         fileContent = "";
         fileName = TimeUtils.getMonthYearDate(date) + ".json";
 
-        File file = new File(context.getFilesDir(), fileName);
+        File folder = context.getExternalFilesDir(filePath);
+        if(!folder.exists()) {
+            folder.mkdir();
+        }
+
+        File file = new File(context.getExternalFilesDir(filePath), fileName);
         if (!file.exists() && !file.isFile()) {
             fileContent = "{\"records\": []}";
-
-            FileWriter writer;
-            try {
-                writer = new FileWriter(file);
-                writer.write(fileContent);
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            writeFile(file, fileContent);
         }
+    }
+
+    private static void writeFile(File file, String content) {
+        FileWriter writer;
+        try {
+            writer = new FileWriter(file);
+            writer.write(content);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
