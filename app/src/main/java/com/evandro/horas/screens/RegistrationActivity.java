@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
@@ -72,6 +74,8 @@ public class RegistrationActivity extends AppCompatActivity {
         SimpleMaskFormatter smfd = new SimpleMaskFormatter("NN/NN/NNNN");
         MaskTextWatcher mtwd = new MaskTextWatcher(txtDate, smfd);
         txtDate.addTextChangedListener(mtwd);
+
+        changeFocus();
 
         if(getDate() != null) {
             txtDate.setText(getDate());
@@ -181,6 +185,60 @@ public class RegistrationActivity extends AppCompatActivity {
         txtIntervalEntry.setText("");
         txtIntervalExit.setText("");
         txtExit.setText("");
+    }
+
+    private void changeFocus() {
+        txtEntry.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(txtEntry.length() > 4) {
+                    txtIntervalEntry.requestFocus();
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+        txtIntervalEntry.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(txtIntervalEntry.length() > 4) {
+                    txtIntervalExit.requestFocus();
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+        txtIntervalExit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(txtIntervalExit.length() > 4) {
+                    txtExit.requestFocus();
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+        txtExit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(txtExit.length() > 4) {
+                    Log.d("tag", "ahammmmm");
+                    btnSave.setFocusable(true);
+                    btnSave.setFocusableInTouchMode(true);
+                    btnSave.requestFocus();
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
     }
 
     @Override

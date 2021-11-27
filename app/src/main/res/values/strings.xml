@@ -5,7 +5,7 @@
     <string name="intervalEntry">Entrada do Intervalo:</string>
     <string name="intervalExit">Saída do Intervalo:</string>
     <string name="exit">Saída:</string>
-    <string name="register">Cadastrar</string>
+    <string name="register">Salvar</string>
     <string name="add">Adicionar</string>
     <string name="delete">Excluir</string>
     <string name="update">Atualizar</string>
