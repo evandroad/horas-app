@@ -134,6 +134,13 @@ public class RegistrationActivity extends AppCompatActivity {
 
         String date = r.getDate();
 
+        if(txtEntry.length() > 1 && txtIntervalEntry.length() > 1 && txtIntervalExit.length() > 1 && txtExit.length() > 1) {
+            clearFields();
+            date = TimeUtils.moreDay(txtDate.getText().toString());
+            txtDate.setText(date);
+            loadForm();
+        }
+
         JsonUtils.createNewFile(this, date);
 
         fileContent = JsonUtils.getJsonString(this, date);
