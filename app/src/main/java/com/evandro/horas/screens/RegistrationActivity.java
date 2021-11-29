@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -100,7 +102,7 @@ public class RegistrationActivity extends AppCompatActivity {
         mtw = new MaskTextWatcher(txtExit, smf);
         txtExit.addTextChangedListener(mtw);
 
-        txtEntry.requestFocus();
+        setFocus();
 
         btnSave.setOnClickListener((v) -> save());
 
@@ -144,7 +146,6 @@ public class RegistrationActivity extends AppCompatActivity {
         JsonUtils.createNewFile(this, date);
 
         fileContent = JsonUtils.getJsonString(this, date);
-        Log.d("tag", "filecontent: " + fileContent);
         records = gson.fromJson(fileContent, Records.class);
 
         records.getRecords().removeIf(re -> re.getDate().equals(r.getDate()));
@@ -161,13 +162,10 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void loadForm() {
-        String date;
-        Gson gson = new Gson();
-
-        date = txtDate.getText().toString();
+        String date = txtDate.getText().toString();
         fileContent = JsonUtils.getJsonString(this, date);
 
-        records = gson.fromJson(fileContent, Records.class);
+        records = new Gson().fromJson(fileContent, Records.class);
 
         if(records != null) {
             for(Register reg : records.getRecords()) {
@@ -192,6 +190,17 @@ public class RegistrationActivity extends AppCompatActivity {
         txtIntervalEntry.setText("");
         txtIntervalExit.setText("");
         txtExit.setText("");
+    }
+
+    private void setFocus() {
+        if (txtEntry.length() > 1 && txtIntervalEntry.length() > 1 && txtIntervalExit.length() > 1) {
+            txtExit.requestFocus();
+        } else if (txtEntry.length() > 1 && txtIntervalEntry.length() > 1) {
+            txtIntervalExit.requestFocus();
+        } else if (txtEntry.length() > 1) {
+            txtIntervalEntry.requestFocus();
+        }
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     private void changeFocus() {
@@ -237,7 +246,6 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(txtExit.length() > 4) {
-                    Log.d("tag", "ahammmmm");
                     btnSave.setFocusable(true);
                     btnSave.setFocusableInTouchMode(true);
                     btnSave.requestFocus();

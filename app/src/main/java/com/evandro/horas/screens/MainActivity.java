@@ -168,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
         for(Register r : records.getRecords()) {
             if(r.getEntry().equals("") || r.getIntervalEntry().equals("") || r.getIntervalExit().equals("")
                     || r.getExit().equals("")) {
-                Log.d("TAG", "DATE: " + r.getDate());
             } else {
                 t = t + TimeUtils.totalMin(r.getEntry(), r.getIntervalEntry(), r.getIntervalExit(), r.getExit());
                 b = TimeUtils.balanceMin(r.getEntry(), r.getIntervalEntry(), r.getIntervalExit(), r.getExit());
