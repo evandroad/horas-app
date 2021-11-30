@@ -199,6 +199,8 @@ public class RegistrationActivity extends AppCompatActivity {
             txtIntervalExit.requestFocus();
         } else if (txtEntry.length() > 1) {
             txtIntervalEntry.requestFocus();
+        } else {
+            txtEntry.requestFocus();
         }
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
