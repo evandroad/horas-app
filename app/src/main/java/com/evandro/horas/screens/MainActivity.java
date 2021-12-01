@@ -174,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
                 bm = bm + b;
                 if(b < 0) hl = hl + b;
                 if(b > 0) ot = ot + b;
-
             }
         }
         tvOvertime.setText(TimeUtils.toHour(ot));

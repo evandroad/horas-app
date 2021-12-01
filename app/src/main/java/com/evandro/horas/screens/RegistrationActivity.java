@@ -2,17 +2,12 @@ package com.evandro.horas.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,27 +17,11 @@ import com.evandro.horas.classes.TimeUtils;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.gson.Gson;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 import com.evandro.horas.classes.JsonUtils;
 import com.evandro.horas.classes.Records;
 import com.evandro.horas.classes.Register;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -124,6 +103,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void save() {
 
+        if(checkInputs()) {
+            Toast.makeText(this, "Formato de horas incorreto.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Gson gson = new Gson();
 
         Register r = new Register(
@@ -177,6 +161,29 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private boolean checkInputs() {
+        boolean r;
+        int len1 = txtEntry.length();
+        int len2 = txtIntervalEntry.length();
+        int len3 = txtIntervalExit.length();
+        int len4 = txtExit.length();
+        String str1 = txtEntry.getText().toString();
+        String[] arr1 = str1.split(":");
+        if (
+            (Math.max(1, len1) == Math.min(len1, 4)) ||
+            (Math.max(1, len2) == Math.min(len2, 4)) ||
+            (Math.max(1, len3) == Math.min(len3, 4)) ||
+            (Math.max(1, len4) == Math.min(len4, 4)) ||
+            !(Math.max(0, Integer.parseInt(arr1[0])) == Math.min(Integer.parseInt(arr1[0]), 24)) ||
+            !(Math.max(0, Integer.parseInt(arr1[1])) == Math.min(Integer.parseInt(arr1[1]), 59))
+        ) {
+            r = true;
+        } else {
+            r = false;
+        }
+        return r;
     }
 
     private String getDate() {

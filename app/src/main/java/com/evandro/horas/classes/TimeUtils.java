@@ -15,13 +15,10 @@ public class TimeUtils {
         int tot;
         if(!en.equals("") && ien.equals("") && iex.equals("") && ex.equals("")) {
             tot = 480 - toMin(en);
-            Log.d("TAG", "Total: " + tot);
         } else if(!en.equals("") && !ien.equals("") && iex.equals("") && ex.equals("")) {
             tot = 480 - toMin(en);
-            Log.d("TAG", "Total: " + tot);
         } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && ex.equals("")) {
             tot = 540 - TimeUtils.toMin(en) - (TimeUtils.toMin(iex) - TimeUtils.toMin(ien));
-            Log.d("TAG", "Total: " + tot);
         } else {
             tot = ((toMin(ex) - toMin(en)) - (toMin(iex) - toMin(ien))) - 528;
         }
