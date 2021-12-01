@@ -12,12 +12,19 @@ import java.util.Locale;
 public class TimeUtils {
 
     public static int balanceMin(String en, String ien, String iex, String ex) {
-        int e1 = 0, ie1 = 0, ie2 = 0, e2 = 0;
-        if(!en.equals("")) { e1 = toMin(en); }
-        if(!ien.equals("")) { ie1 = toMin(ien); }
-        if(!iex.equals("")) { ie2 = toMin(iex); }
-        if(!ex.equals("")) { e2 = toMin(ex); }
-        int tot = ((e2 - e1) - (ie2 - ie1)) - 528;
+        int tot;
+        if(!en.equals("") && ien.equals("") && iex.equals("") && ex.equals("")) {
+            tot = 480 - toMin(en);
+            Log.d("TAG", "Total: " + tot);
+        } else if(!en.equals("") && !ien.equals("") && iex.equals("") && ex.equals("")) {
+            tot = 480 - toMin(en);
+            Log.d("TAG", "Total: " + tot);
+        } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && ex.equals("")) {
+            tot = 540 - TimeUtils.toMin(en) - (TimeUtils.toMin(iex) - TimeUtils.toMin(ien));
+            Log.d("TAG", "Total: " + tot);
+        } else {
+            tot = ((toMin(ex) - toMin(en)) - (toMin(iex) - toMin(ien))) - 528;
+        }
         if(Math.max(-5, tot) == Math.min(tot, 5)) {
             tot = 0;
         }
