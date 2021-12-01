@@ -165,15 +165,13 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private boolean checkInputs() {
         boolean r;
-        int len1 = txtEntry.length();
-        int len2 = txtIntervalEntry.length();
         int len3 = txtIntervalExit.length();
         int len4 = txtExit.length();
         String str1 = txtEntry.getText().toString();
         String[] arr1 = str1.split(":");
         if (
-            (Math.max(1, len1) == Math.min(len1, 4)) ||
-            (Math.max(1, len2) == Math.min(len2, 4)) ||
+            rangeHour(txtEntry.length()) ||
+            rangeHour(txtIntervalEntry.length()) ||
             (Math.max(1, len3) == Math.min(len3, 4)) ||
             (Math.max(1, len4) == Math.min(len4, 4)) ||
             !(Math.max(0, Integer.parseInt(arr1[0])) == Math.min(Integer.parseInt(arr1[0]), 24)) ||
@@ -185,6 +183,14 @@ public class RegistrationActivity extends AppCompatActivity {
         }
         return r;
     }
+    
+    private static boolean rangeHour(int n) {
+		return Math.max(0, n) == Math.min(n, 24);
+	}
+
+	private static boolean rangeMin(int n) {
+		return Math.max(0, n) == Math.min(n, 59);
+	}
 
     private String getDate() {
         Intent i = getIntent();
