@@ -19,8 +19,10 @@ public class TimeUtils {
             tot = 480 - toMin(en);
         } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && ex.equals("")) {
             tot = 540 - TimeUtils.toMin(en) - (TimeUtils.toMin(iex) - TimeUtils.toMin(ien));
-        } else {
+        } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && !ex.equals("")) {
             tot = ((toMin(ex) - toMin(en)) - (toMin(iex) - toMin(ien))) - 528;
+        } else {
+            tot = 0;
         }
         if(Math.max(-5, tot) == Math.min(tot, 5)) {
             tot = 0;

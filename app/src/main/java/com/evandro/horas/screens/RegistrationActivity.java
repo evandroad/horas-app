@@ -30,8 +30,8 @@ public class RegistrationActivity extends AppCompatActivity {
     Button btnLess;
     EditText txtDate;
     EditText txtEntry;
-    EditText txtIntervalEntry;
-    EditText txtIntervalExit;
+    EditText txtIntEntry;
+    EditText txtIntExit;
     EditText txtExit;
     String fileName = "";
     String fileContent = "";
@@ -47,8 +47,8 @@ public class RegistrationActivity extends AppCompatActivity {
         btnLess = findViewById(R.id.btnLess);
         txtDate = findViewById(R.id.txtDate);
         txtEntry = findViewById(R.id.txtEntry);
-        txtIntervalEntry = findViewById(R.id.txtIntervalEntry);
-        txtIntervalExit = findViewById(R.id.txtIntervalExit);
+        txtIntEntry = findViewById(R.id.txtIntervalEntry);
+        txtIntExit = findViewById(R.id.txtIntervalExit);
         txtExit = findViewById(R.id.txtExit);
         fileName = "records.json";
 
@@ -58,7 +58,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         changeFocus();
 
-        if(getDate() != null) {
+        if (getDate() != null) {
             txtDate.setText(getDate());
         } else {
             txtDate.setText(TimeUtils.getDate());
@@ -72,11 +72,11 @@ public class RegistrationActivity extends AppCompatActivity {
         mtw = new MaskTextWatcher(txtEntry, smf);
         txtEntry.addTextChangedListener(mtw);
 
-        mtw = new MaskTextWatcher(txtIntervalEntry, smf);
-        txtIntervalEntry.addTextChangedListener(mtw);
+        mtw = new MaskTextWatcher(txtIntEntry, smf);
+        txtIntEntry.addTextChangedListener(mtw);
 
-        mtw = new MaskTextWatcher(txtIntervalExit, smf);
-        txtIntervalExit.addTextChangedListener(mtw);
+        mtw = new MaskTextWatcher(txtIntExit, smf);
+        txtIntExit.addTextChangedListener(mtw);
 
         mtw = new MaskTextWatcher(txtExit, smf);
         txtExit.addTextChangedListener(mtw);
@@ -103,7 +103,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void save() {
 
-        if(checkInputs()) {
+        if (checkInputs() == 1) {
             Toast.makeText(this, "Formato de horas incorreto.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -113,14 +113,14 @@ public class RegistrationActivity extends AppCompatActivity {
         Register r = new Register(
                 txtDate.getText().toString(),
                 txtEntry.getText().toString(),
-                txtIntervalEntry.getText().toString(),
-                txtIntervalExit.getText().toString(),
+                txtIntEntry.getText().toString(),
+                txtIntExit.getText().toString(),
                 txtExit.getText().toString()
         );
 
         String date = r.getDate();
 
-        if(txtEntry.length() > 1 && txtIntervalEntry.length() > 1 && txtIntervalExit.length() > 1 && txtExit.length() > 1) {
+        if (txtEntry.length() > 1 && txtIntEntry.length() > 1 && txtIntExit.length() > 1 && txtExit.length() > 1) {
             clearFields();
             date = TimeUtils.moreDay(txtDate.getText().toString());
             txtDate.setText(date);
@@ -151,46 +151,95 @@ public class RegistrationActivity extends AppCompatActivity {
 
         records = new Gson().fromJson(fileContent, Records.class);
 
-        if(records != null) {
-            for(Register reg : records.getRecords()) {
+        if (records != null) {
+            for (Register reg : records.getRecords()) {
                 if (reg.getDate().equals(date)) {
                     txtEntry.setText(reg.getEntry());
-                    txtIntervalEntry.setText(reg.getIntervalEntry());
-                    txtIntervalExit.setText(reg.getIntervalExit());
+                    txtIntEntry.setText(reg.getIntervalEntry());
+                    txtIntExit.setText(reg.getIntervalExit());
                     txtExit.setText(reg.getExit());
                 }
             }
         }
     }
 
-    private boolean checkInputs() {
-        boolean r;
-        int len3 = txtIntervalExit.length();
-        int len4 = txtExit.length();
+    private int checkInputs() {
+        int r = 0;
         String str1 = txtEntry.getText().toString();
         String[] arr1 = str1.split(":");
-        if (
-            rangeHour(txtEntry.length()) ||
-            rangeHour(txtIntervalEntry.length()) ||
-            (Math.max(1, len3) == Math.min(len3, 4)) ||
-            (Math.max(1, len4) == Math.min(len4, 4)) ||
-            !(Math.max(0, Integer.parseInt(arr1[0])) == Math.min(Integer.parseInt(arr1[0]), 24)) ||
-            !(Math.max(0, Integer.parseInt(arr1[1])) == Math.min(Integer.parseInt(arr1[1]), 59))
-        ) {
-            r = true;
+        String str2 = txtIntEntry.getText().toString();
+        String[] arr2 = str2.split(":");
+        String str3 = txtIntExit.getText().toString();
+        String[] arr3 = str3.split(":");
+        String str4 = txtExit.getText().toString();
+        String[] arr4 = str4.split(":");
+
+        if (lengthHour(txtEntry.length()) || lengthHour(txtIntEntry.length()) || lengthHour(txtIntExit.length()) ||
+                lengthHour(txtExit.length())) {
+            r = 1;
         } else {
-            r = false;
+            if (txtEntry.length() == 5) {
+                if (rangeHour(Integer.parseInt(arr1[0]))) {
+                    if (rangeMin(Integer.parseInt(arr1[1]))) {
+                        r = 0;
+                    } else {
+                        r = 1;
+                    }
+                } else {
+                    r = 1;
+                }
+            }
+            if (txtIntEntry.length() == 5) {
+                if (rangeHour(Integer.parseInt(arr2[0]))) {
+                    if (rangeMin(Integer.parseInt(arr2[1]))) {
+                        r = 0;
+                    } else {
+                        r = 1;
+                    }
+                } else {
+                    r = 1;
+                }
+            }
+            if (txtIntExit.length() == 5) {
+                if (rangeHour(Integer.parseInt(arr3[0]))) {
+                    if (rangeMin(Integer.parseInt(arr3[1]))) {
+                        r = 0;
+                    } else {
+                        r = 1;
+                    }
+                } else {
+                    r = 1;
+                }
+            }
+            if (txtExit.length() == 5) {
+                if (rangeHour(Integer.parseInt(arr4[0]))) {
+                    if (rangeMin(Integer.parseInt(arr4[1]))) {
+                        r = 0;
+                    } else {
+                        r = 1;
+                    }
+                } else {
+                    r = 1;
+                }
+            }
         }
+
         return r;
     }
-    
-    private static boolean rangeHour(int n) {
-		return Math.max(0, n) == Math.min(n, 24);
-	}
 
-	private static boolean rangeMin(int n) {
-		return Math.max(0, n) == Math.min(n, 59);
-	}
+    private static boolean lengthHour(int n) {
+        return Math.max(1, n) == Math.min(n, 4);
+    }
+
+    private static boolean rangeHour(int n) {
+        boolean r = Math.max(0, n) == Math.min(n, 23);
+        return r;
+    }
+
+    private static boolean rangeMin(int n) {
+        boolean r = Math.max(0, n) == Math.min(n, 59);
+        return r;
+    }
 
     private String getDate() {
         Intent i = getIntent();
@@ -200,18 +249,18 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void clearFields() {
         txtEntry.setText("");
-        txtIntervalEntry.setText("");
-        txtIntervalExit.setText("");
+        txtIntEntry.setText("");
+        txtIntExit.setText("");
         txtExit.setText("");
     }
 
     private void setFocus() {
-        if (txtEntry.length() > 1 && txtIntervalEntry.length() > 1 && txtIntervalExit.length() > 1) {
+        if (txtEntry.length() > 1 && txtIntEntry.length() > 1 && txtIntExit.length() > 1) {
             txtExit.requestFocus();
-        } else if (txtEntry.length() > 1 && txtIntervalEntry.length() > 1) {
-            txtIntervalExit.requestFocus();
+        } else if (txtEntry.length() > 1 && txtIntEntry.length() > 1) {
+            txtIntExit.requestFocus();
         } else if (txtEntry.length() > 1) {
-            txtIntervalEntry.requestFocus();
+            txtIntEntry.requestFocus();
         } else {
             txtEntry.requestFocus();
         }
@@ -221,53 +270,69 @@ public class RegistrationActivity extends AppCompatActivity {
     private void changeFocus() {
         txtEntry.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(txtEntry.length() > 4) {
-                    txtIntervalEntry.requestFocus();
+                if (txtEntry.length() > 4) {
+                    txtIntEntry.requestFocus();
                 }
             }
+
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+            }
         });
-        txtIntervalEntry.addTextChangedListener(new TextWatcher() {
+        txtIntEntry.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(txtIntervalEntry.length() > 4) {
-                    txtIntervalExit.requestFocus();
+                if (txtIntEntry.length() > 4) {
+                    txtIntExit.requestFocus();
                 }
             }
+
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+            }
         });
-        txtIntervalExit.addTextChangedListener(new TextWatcher() {
+        txtIntExit.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(txtIntervalExit.length() > 4) {
+                if (txtIntExit.length() > 4) {
                     txtExit.requestFocus();
                 }
             }
+
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+            }
         });
         txtExit.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(txtExit.length() > 4) {
+                if (txtExit.length() > 4) {
                     btnSave.setFocusable(true);
                     btnSave.setFocusableInTouchMode(true);
                     btnSave.requestFocus();
                 }
             }
+
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+            }
         });
     }
 
