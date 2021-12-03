@@ -139,8 +139,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
         JsonUtils.createJsonFile(this, records, date);
 
-        txtEntry.requestFocus();
-
         Toast.makeText(this, "Dados cadastrados com sucesso.", Toast.LENGTH_SHORT).show();
 
     }
