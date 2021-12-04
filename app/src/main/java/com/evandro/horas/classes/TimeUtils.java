@@ -18,7 +18,7 @@ public class TimeUtils {
         } else if(!en.equals("") && !ien.equals("") && iex.equals("") && ex.equals("")) {
             tot = 480 - toMin(en);
         } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && ex.equals("")) {
-            tot = 540 - TimeUtils.toMin(en) - (TimeUtils.toMin(iex) - TimeUtils.toMin(ien));
+            tot = 540 - toMin(en) - (toMin(iex) - toMin(ien));
         } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && !ex.equals("")) {
             tot = ((toMin(ex) - toMin(en)) - (toMin(iex) - toMin(ien))) - 528;
         } else {
@@ -31,12 +31,18 @@ public class TimeUtils {
     }
 
     public static int totalMin(String en, String ien, String iex, String ex) {
-        int e1 = 0, ie1 = 0, ie2 = 0, e2 = 0;
-        if(!en.equals("")) { e1 = toMin(en); }
-        if(!ien.equals("")) { ie1 = toMin(ien); }
-        if(!iex.equals("")) { ie2 = toMin(iex); }
-        if(!ex.equals("")) { e2 = toMin(ex); }
-        int tot = (ie1 - e1) + (e2 - ie2);
+        int tot = 0;
+
+        if(!en.equals("") && ien.equals("") && iex.equals("") && ex.equals("")) {
+            tot = 0;
+        }else if(!en.equals("") && !ien.equals("") && iex.equals("") && ex.equals("")) {
+            tot = toMin(ien) - toMin(en);
+        } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && ex.equals("")) {
+            tot = 0;
+        } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && !ex.equals("")) {
+            tot = (toMin(ien) - toMin(en)) + (toMin(ex) - toMin(ien));
+        }
+
         return tot;
     }
 
