@@ -7,6 +7,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class TimeUtils {
@@ -16,7 +17,9 @@ public class TimeUtils {
         if(!en.equals("") && ien.equals("") && iex.equals("") && ex.equals("")) {
             tot = 480 - toMin(en);
         } else if(!en.equals("") && !ien.equals("") && iex.equals("") && ex.equals("")) {
-            tot = 480 - toMin(en);
+            tot = (toMin(ien) - toMin(en)) - 528;
+        } else if(!en.equals("") && ien.equals("") && iex.equals("") && !ex.equals("")) {
+            tot = (toMin(ex) - toMin(en)) - 528;
         } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && ex.equals("")) {
             tot = 540 - toMin(en) - (toMin(iex) - toMin(ien));
         } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && !ex.equals("")) {
@@ -31,14 +34,17 @@ public class TimeUtils {
     }
 
     public static int totalMin(String en, String ien, String iex, String ex) {
+        Date date = new Date();
         int tot = 0;
 
         if(!en.equals("") && ien.equals("") && iex.equals("") && ex.equals("")) {
-            tot = 0;
+            tot = toMin(date.getHours()+":"+date.getMinutes()) - toMin(en);
         }else if(!en.equals("") && !ien.equals("") && iex.equals("") && ex.equals("")) {
             tot = toMin(ien) - toMin(en);
+        }else if(!en.equals("") && ien.equals("") && iex.equals("") && !ex.equals("")) {
+            tot = toMin(ex) - toMin(en);
         } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && ex.equals("")) {
-            tot = 0;
+            tot = (toMin(ien) - toMin(en)) + toMin(date.getHours()+":"+date.getMinutes()) - toMin(iex);
         } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && !ex.equals("")) {
             tot = (toMin(ex) - toMin(en)) - (toMin(iex) - toMin(ien));
         }

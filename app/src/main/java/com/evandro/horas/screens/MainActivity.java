@@ -166,15 +166,15 @@ public class MainActivity extends AppCompatActivity {
         int b, ot = 0, hl = 0, bm = 0, t = 0;
 
         for(Register r : records.getRecords()) {
-            if(r.getEntry().equals("") || r.getIntervalEntry().equals("") || r.getIntervalExit().equals("")
-                    || r.getExit().equals("")) {
-            } else {
+            //if(r.getEntry().equals("") || r.getIntervalEntry().equals("") || r.getIntervalExit().equals("")
+            //        || r.getExit().equals("")) {
+            //} else {
                 t = t + TimeUtils.totalMin(r.getEntry(), r.getIntervalEntry(), r.getIntervalExit(), r.getExit());
                 b = TimeUtils.balanceMin(r.getEntry(), r.getIntervalEntry(), r.getIntervalExit(), r.getExit());
                 bm = bm + b;
                 if(b < 0) hl = hl + b;
                 if(b > 0) ot = ot + b;
-            }
+            //}
         }
         tvOvertime.setText(TimeUtils.toHour(ot));
         tvHourLess.setText(TimeUtils.toHour(hl));
