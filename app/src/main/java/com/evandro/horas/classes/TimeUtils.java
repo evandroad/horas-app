@@ -40,7 +40,7 @@ public class TimeUtils {
         } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && ex.equals("")) {
             tot = 0;
         } else if(!en.equals("") && !ien.equals("") && !iex.equals("") && !ex.equals("")) {
-            tot = (toMin(ien) - toMin(en)) + (toMin(ex) - toMin(ien));
+            tot = (toMin(ex) - toMin(en)) - (toMin(iex) - toMin(ien));
         }
 
         return tot;
