@@ -3,11 +3,11 @@
     <style name="Theme.Horas" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/blue_1</item>
-        <item name="colorPrimaryVariant">@color/blue_1</item>
+        <item name="colorPrimaryVariant">@color/gray_1</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/blue_2</item>
-        <item name="colorSecondaryVariant">@color/blue_2</item>
+        <item name="colorSecondaryVariant">#505050</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">
