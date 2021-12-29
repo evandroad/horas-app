@@ -25,16 +25,9 @@ import com.evandro.horas.classes.Register;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    Button btnSave;
-    Button btnMore;
-    Button btnLess;
-    EditText txtDate;
-    EditText txtEntry;
-    EditText txtIntEntry;
-    EditText txtIntExit;
-    EditText txtExit;
-    String fileName = "";
-    String fileContent = "";
+    Button btnSave, btnMore, btnLess;
+    EditText txtDate, txtEntry, txtIntEntry, txtIntExit, txtExit;
+    String fileName = "", fileContent = "";
     Records records = new Records();
 
     @Override

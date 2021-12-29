@@ -28,13 +28,7 @@ import com.evandro.horas.classes.RegisterAdapter;
 public class MainActivity extends AppCompatActivity {
 
     private ListView listView;
-    private TextView tvMainDate;
-    private TextView tvOvertime;
-    private TextView tvHourLess;
-    private TextView tvBalanceMonth;
-    private TextView tvTotalMonth;
-    private TextView tvMonthYear;
-    private TextView tvDayWeek;
+    private TextView tvMainDate, tvOvertime, tvHourLess, tvBalanceMonth, tvTotalMonth, tvMonthYear, tvDayWeek;
     private Records records = new Records();
     RegisterAdapter adapter;
 
@@ -48,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnLessDay = findViewById(R.id.btnLessDay);
         Button btnMoreMonth = findViewById(R.id.btnMoreMonth);
         Button btnLessMonth = findViewById(R.id.btnLessMonth);
+        Button btnMenu = findViewById(R.id.btnMenu);
         listView = findViewById(R.id.list_records);
         tvMainDate = findViewById(R.id.tvMainDate);
         tvOvertime = findViewById(R.id.tvOvertime);
@@ -113,6 +108,11 @@ public class MainActivity extends AppCompatActivity {
             fillTable();
         });
 
+        btnMenu.setOnClickListener(v -> {
+            Intent it = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(it);
+        });
+
     }
 
     @Override
@@ -122,14 +122,8 @@ public class MainActivity extends AppCompatActivity {
                     .setTitle("Atenção")
                     .setMessage("Realmente deseja excluir este registro?")
                     .setNegativeButton("NÃO", null)
-                    .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            delete(item);
-                        }
-                    }).create();
+                    .setPositiveButton("SIM", (dialog1, which) -> delete(item)).create();
             dialog.show();
-
         } else {
             update(item);
         }

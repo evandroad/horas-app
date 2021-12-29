@@ -1,16 +1,17 @@
 <resources>
     <string name="app_name">Horas</string>
-    <string name="date">Data:</string>
-    <string name="entry">Entrada:</string>
-    <string name="intervalEntry">Entrada do Intervalo:</string>
-    <string name="intervalExit">Saída do Intervalo:</string>
-    <string name="exit">Saída:</string>
-    <string name="register">Salvar</string>
     <string name="add">Adicionar</string>
+    <string name="date">Data:</string>
+    <string name="exit">Saída:</string>
+    <string name="entry">Entrada:</string>
     <string name="delete">Excluir</string>
     <string name="update">Atualizar</string>
+    <string name="register">Salvar</string>
     <string name="overtime">Horas Extras:</string>
     <string name="hoursLess">Horas Faltas:</string>
-    <string name="balanceMonth">Saldo Do Mês:</string>
+    <string name="startDate">Data início</string>
     <string name="totalMonth">Total Do Mês:</string>
+    <string name="intervalExit">Saída do Intervalo:</string>
+    <string name="balanceMonth">Saldo Do Mês:</string>
+    <string name="intervalEntry">Entrada do Intervalo:</string>
 </resources>
