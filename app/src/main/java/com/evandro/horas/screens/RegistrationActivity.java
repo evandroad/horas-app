@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -101,8 +100,6 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
 
-        Gson gson = new Gson();
-
         Register r = new Register(
                 txtDate.getText().toString(),
                 txtEntry.getText().toString(),
@@ -123,14 +120,14 @@ public class RegistrationActivity extends AppCompatActivity {
         JsonUtils.createNewFile(this, date);
 
         fileContent = JsonUtils.getJsonString(this, date);
-        records = gson.fromJson(fileContent, Records.class);
+        records = new Gson().fromJson(fileContent, Records.class);
 
         records.getRecords().removeIf(re -> re.getDate().equals(r.getDate()));
 
         records.setRecords(r);
         Collections.sort(records.getRecords(), Collections.reverseOrder());
 
-        JsonUtils.createJsonFile(this, records, date);
+        JsonUtils.updateJsonFile(this, records, date);
 
         Toast.makeText(this, "Dados cadastrados com sucesso.", Toast.LENGTH_SHORT).show();
 

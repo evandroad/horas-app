@@ -2,13 +2,9 @@ package com.evandro.horas.screens;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
@@ -131,11 +127,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fillTable() {
-        Gson gson = new Gson();
         String date = tvMainDate.getText().toString();
         String fileContent = JsonUtils.getJsonString(this, date);
-        records = gson.fromJson(fileContent, Records.class);
-
+        records = new Gson().fromJson(fileContent, Records.class);
 
         for (int i = 0; i < records.getRecords().size(); i++) {
             int comparison = TimeUtils.compareTo(records.getRecords().get(i).getDate(), date);
@@ -191,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
 
-        JsonUtils.createJsonFile(this, records, date);
+        JsonUtils.updateJsonFile(this, records, date);
 
         fillTable();
 

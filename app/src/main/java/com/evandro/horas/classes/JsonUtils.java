@@ -37,7 +37,7 @@ public class JsonUtils {
         return fileContent;
     }
 
-    public static void createJsonFile(Context context, Records rec, String date) {
+    public static void updateJsonFile(Context context, Records rec, String date) {
 
         fileContent = "";
         fileName = TimeUtils.getMonthYearDate(date) + ".json";
@@ -45,7 +45,7 @@ public class JsonUtils {
         for (Register reg : rec.getRecords()) {
 
             StringBuilder line = new StringBuilder();
-            line.append("{\"date\":\"" + reg.getDate() + "\",");
+            line.append("\n    {\"date\":\"" + reg.getDate() + "\",");
             line.append("\"entry\":\"" + reg.getEntry() + "\",");
             line.append("\"intervalEntry\":\"" + reg.getIntervalEntry() + "\",");
             line.append("\"intervalExit\":\"" + reg.getIntervalExit() + "\",");
@@ -54,7 +54,7 @@ public class JsonUtils {
             if (fileContent == "") {
                 fileContent = line.toString();
             } else {
-                fileContent = fileContent + ", " + line.toString();
+                fileContent = fileContent + ", " + line;
             }
 
         }
