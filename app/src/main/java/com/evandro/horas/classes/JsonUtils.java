@@ -78,7 +78,7 @@ public class JsonUtils {
 
         File file = new File(context.getExternalFilesDir(filePath), fileName);
         if (!file.exists() && !file.isFile()) {
-            fileContent = "{\"records\": []}";
+            fileContent = "[]";
             writeFile(file, fileContent);
         }
     }

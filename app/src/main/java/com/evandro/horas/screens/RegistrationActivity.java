@@ -12,11 +12,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.evandro.horas.R;
+import com.evandro.horas.classes.App;
 import com.evandro.horas.classes.TimeUtils;
+import com.evandro.horas.util.FileUtil;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.gson.Gson;
+
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import com.evandro.horas.classes.JsonUtils;
 import com.evandro.horas.classes.Records;
@@ -26,7 +32,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
     Button btnSave, btnMore, btnLess;
     EditText txtDate, txtEntry, txtIntEntry, txtIntExit, txtExit;
-    String fileName = "", fileContent = "";
     Records records = new Records();
 
     @Override
@@ -42,7 +47,6 @@ public class RegistrationActivity extends AppCompatActivity {
         txtIntEntry = findViewById(R.id.txtIntervalEntry);
         txtIntExit = findViewById(R.id.txtIntervalExit);
         txtExit = findViewById(R.id.txtExit);
-        fileName = "records.json";
 
         SimpleMaskFormatter smfd = new SimpleMaskFormatter("NN/NN/NNNN");
         MaskTextWatcher mtwd = new MaskTextWatcher(txtDate, smfd);
@@ -108,39 +112,48 @@ public class RegistrationActivity extends AppCompatActivity {
                 txtExit.getText().toString()
         );
 
+        JsonUtils.createNewFile(getApplicationContext(), txtDate.getText().toString());
+
+        App.setList(r);
+        String fileName = TimeUtils.getMonthYearDate(txtDate.getText().toString()) + ".json";
+        File file = new File(App.getFolder(), fileName);
+        FileUtil.saveStringToFile(file, App.getList().toString());
+
         String date = r.getDate();
 
-        if (txtEntry.length() > 1 && txtIntEntry.length() > 1 && txtIntExit.length() > 1 && txtExit.length() > 1) {
-            clearFields();
-            date = TimeUtils.moreDay(txtDate.getText().toString());
-            txtDate.setText(date);
-            loadForm();
-        }
+//        if (txtEntry.length() > 1 && txtIntEntry.length() > 1 && txtIntExit.length() > 1 && txtExit.length() > 1) {
+//            clearFields();
+//            date = TimeUtils.moreDay(txtDate.getText().toString());
+//            txtDate.setText(date);
+//            loadForm();
+//        }
 
-        JsonUtils.createNewFile(this, date);
-
-        fileContent = JsonUtils.getJsonString(this, date);
-        records = new Gson().fromJson(fileContent, Records.class);
-
-        records.getRecords().removeIf(re -> re.getDate().equals(r.getDate()));
-
-        records.setRecords(r);
-        Collections.sort(records.getRecords(), Collections.reverseOrder());
-
-        JsonUtils.updateJsonFile(this, records, date);
-
-        Toast.makeText(this, "Dados cadastrados com sucesso.", Toast.LENGTH_SHORT).show();
+//        JsonUtils.createNewFile(this, date);
+//
+//        fileContent = JsonUtils.getJsonString(this, date);
+//        records = new Gson().fromJson(fileContent, Records.class);
+//
+//        records.getRecords().removeIf(re -> re.getDate().equals(r.getDate()));
+//
+//        records.setRecords(r);
+//        Collections.sort(records.getRecords(), Collections.reverseOrder());
+//
+//        JsonUtils.updateJsonFile(this, records, date);
+//
+//        Toast.makeText(this, "Dados cadastrados com sucesso.", Toast.LENGTH_SHORT).show();
 
     }
 
     private void loadForm() {
         String date = txtDate.getText().toString();
-        fileContent = JsonUtils.getJsonString(this, date);
+//        fileContent = JsonUtils.getJsonString(this, date);
 
-        records = new Gson().fromJson(fileContent, Records.class);
+//        records = new Gson().fromJson(fileContent, Records.class);
 
-        if (records != null) {
-            for (Register reg : records.getRecords()) {
+//        if (records != null) {
+        if (App.getList() != null) {
+//            for (Register reg : records.getRecords()) {
+            for (Register reg : App.getList()) {
                 if (reg.getDate().equals(date)) {
                     txtEntry.setText(reg.getEntry());
                     txtIntEntry.setText(reg.getIntervalEntry());

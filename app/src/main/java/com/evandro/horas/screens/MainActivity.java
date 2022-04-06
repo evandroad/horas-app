@@ -2,7 +2,6 @@ package com.evandro.horas.screens;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,9 +12,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.evandro.horas.R;
+import com.evandro.horas.classes.App;
 import com.evandro.horas.classes.TimeUtils;
 import com.google.gson.Gson;
-
 import com.evandro.horas.classes.JsonUtils;
 import com.evandro.horas.classes.Records;
 import com.evandro.horas.classes.Register;
@@ -23,30 +22,18 @@ import com.evandro.horas.classes.RegisterAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ListView listView;
     private TextView tvMainDate, tvOvertime, tvHourLess, tvBalanceMonth, tvTotalMonth, tvMonthYear, tvDayWeek;
+    private Button btnAdd, btnMoreDay, btnLessDay, btnMoreMonth, btnLessMonth, btnMenu;
     private Records records = new Records();
-    RegisterAdapter adapter;
+    private RegisterAdapter adapter;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btnAdd = findViewById(R.id.btnAdd);
-        Button btnMoreDay = findViewById(R.id.btnMoreDay);
-        Button btnLessDay = findViewById(R.id.btnLessDay);
-        Button btnMoreMonth = findViewById(R.id.btnMoreMonth);
-        Button btnLessMonth = findViewById(R.id.btnLessMonth);
-        Button btnMenu = findViewById(R.id.btnMenu);
-        listView = findViewById(R.id.list_records);
-        tvMainDate = findViewById(R.id.tvMainDate);
-        tvOvertime = findViewById(R.id.tvOvertime);
-        tvHourLess = findViewById(R.id.tvHourLess);
-        tvTotalMonth = findViewById(R.id.tvTotalMonth);
-        tvBalanceMonth = findViewById(R.id.tvBalanceMonth);
-        tvMonthYear = findViewById(R.id.tvMonthYear);
-        tvDayWeek = findViewById(R.id.tvDayWeek);
+        initializeComponents();
 
         if(getDate() != null) {
             tvMainDate.setText(getDate());
@@ -56,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
         tvMonthYear.setText(TimeUtils.getMonthYearString(tvMainDate.getText().toString()));
         tvDayWeek.setText(TimeUtils.getDayWeekString(tvMainDate.getText().toString()));
 
-        JsonUtils.createNewFile(this, TimeUtils.getDate());
+//        JsonUtils.createNewFile(this, TimeUtils.getDate());
 
-        fillTable();
+//        fillTable();
 
         tvMainDate.setOnClickListener(v -> {
             tvMainDate.setText(TimeUtils.getDate());
@@ -111,6 +98,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void initializeComponents() {
+        btnAdd = findViewById(R.id.btnAdd);
+        btnMoreDay = findViewById(R.id.btnMoreDay);
+        btnLessDay = findViewById(R.id.btnLessDay);
+        btnMoreMonth = findViewById(R.id.btnMoreMonth);
+        btnLessMonth = findViewById(R.id.btnLessMonth);
+        btnMenu = findViewById(R.id.btnMenu);
+        listView = findViewById(R.id.list_records);
+        tvMainDate = findViewById(R.id.tvMainDate);
+        tvOvertime = findViewById(R.id.tvOvertime);
+        tvHourLess = findViewById(R.id.tvHourLess);
+        tvTotalMonth = findViewById(R.id.tvTotalMonth);
+        tvBalanceMonth = findViewById(R.id.tvBalanceMonth);
+        tvMonthYear = findViewById(R.id.tvMonthYear);
+        tvDayWeek = findViewById(R.id.tvDayWeek);
+    }
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if(item.getItemId() == 1 ) {
@@ -144,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         listView.invalidateViews();
-        adapter = new RegisterAdapter(this, records.getRecords());
+//        adapter = new RegisterAdapter(this, records.getRecords());
+        adapter = new RegisterAdapter(this, App.getList());
         listView.setAdapter(adapter);
         listView.setOnCreateContextMenuListener((contextMenu, view, contextMenuInfo) -> {
             contextMenu.add(Menu.NONE, 1, Menu.NONE, "Deletar");
