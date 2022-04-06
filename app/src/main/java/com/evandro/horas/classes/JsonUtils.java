@@ -42,22 +42,22 @@ public class JsonUtils {
         fileContent = "";
         fileName = TimeUtils.getMonthYearDate(date) + ".json";
 
-        for (Register reg : rec.getRecords()) {
-
-            StringBuilder line = new StringBuilder();
-            line.append("\n    {\"date\":\"" + reg.getDate() + "\",");
-            line.append("\"entry\":\"" + reg.getEntry() + "\",");
-            line.append("\"intervalEntry\":\"" + reg.getIntervalEntry() + "\",");
-            line.append("\"intervalExit\":\"" + reg.getIntervalExit() + "\",");
-            line.append("\"exit\":\"" + reg.getExit() + "\"}");
-
-            if (fileContent == "") {
-                fileContent = line.toString();
-            } else {
-                fileContent = fileContent + ", " + line;
-            }
-
-        }
+//        for (Register reg : rec.getRecords()) {
+//
+//            StringBuilder line = new StringBuilder();
+//            line.append("\n    {\"date\":\"" + reg.getDate() + "\",");
+//            line.append("\"entry\":\"" + reg.getEntry() + "\",");
+//            line.append("\"intervalEntry\":\"" + reg.getIntervalEntry() + "\",");
+//            line.append("\"intervalExit\":\"" + reg.getIntervalExit() + "\",");
+//            line.append("\"exit\":\"" + reg.getExit() + "\"}");
+//
+//            if (fileContent == "") {
+//                fileContent = line.toString();
+//            } else {
+//                fileContent = fileContent + ", " + line;
+//            }
+//
+//        }
 
         fileContent = "{\"records\": [" + fileContent + "]}";
 

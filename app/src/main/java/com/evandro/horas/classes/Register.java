@@ -1,15 +1,8 @@
 package com.evandro.horas.classes;
 
-import com.evandro.horas.util.FileUtil;
-import com.google.gson.Gson;
-
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Register implements Comparable<Register> {
 
@@ -44,13 +37,13 @@ public class Register implements Comparable<Register> {
 
     @Override
     public String toString() {
-        return "{" +
-                "\"date\":\"" + date + '\"' +
-                ",\"entry\":\"" + entry + '\"' +
-                ",\"intervalEntry\":\"" + intervalEntry + '\"' +
-                ",\"intervalExit\":\"" + intervalExit + '\"' +
-                ",\"exit\":\"" + exit + '\"' +
-                "}";
+        return "    {" +
+                "\"date\":\"" + date +
+                "\",\"entry\":\"" + entry +
+                "\",\"intervalEntry\":\"" + intervalEntry +
+                "\",\"intervalExit\":\"" + intervalExit +
+                "\",\"exit\":\"" + exit +
+                "\"}";
     }
 
     @Override
@@ -60,24 +53,5 @@ public class Register implements Comparable<Register> {
         DateTime otherDate = format.parseDateTime(other.date);
         return thisDate.compareTo(otherDate);
     }
-
-//    private static void createFile() {
-//        if (!folder.exists())
-//            folder.mkdir();
-//
-//        if (!file.exists())
-//            FileUtil.saveStringToFile(file, Register.getList().toString());
-//    }
-//
-//    public void save() {
-//        createFile();
-//        FileUtil.saveStringToFile(file, Register.getList().toString());
-//    }
-//
-//    public static void loadFileData() {
-//
-//        Register.createFile();
-//        instance = new Gson().fromJson(FileUtil.getStringFromFile(file), Register[].class);
-//    }
 
 }

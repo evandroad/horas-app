@@ -2,10 +2,14 @@ package com.evandro.horas.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +17,7 @@ import android.widget.Toast;
 
 import com.evandro.horas.R;
 import com.evandro.horas.classes.App;
+import com.evandro.horas.classes.RegistrationProc;
 import com.evandro.horas.classes.TimeUtils;
 import com.evandro.horas.util.FileUtil;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
@@ -30,9 +35,14 @@ import com.evandro.horas.classes.Register;
 
 public class RegistrationActivity extends AppCompatActivity {
 
+    public static final int MSG_RENDER = 0;
+    public static final int MSG_SUCCESS = 1;
+    public static final int MSG_FORMAT_INCORRECT = 2;
+
     Button btnSave, btnMore, btnLess;
     EditText txtDate, txtEntry, txtIntEntry, txtIntExit, txtExit;
-    Records records = new Records();
+    private Handler handler;
+    private RegistrationProc registrationProc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +89,22 @@ public class RegistrationActivity extends AppCompatActivity {
 
         setFocus();
 
-        btnSave.setOnClickListener((v) -> save());
+        btnSave.setOnClickListener((v) -> {
+            handler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    updateUI(msg);
+                }
+            };
+            registrationProc = new RegistrationProc(handler);
+            registrationProc.start();
+            registrationProc.setDate(txtDate.getText().toString());
+            registrationProc.setEntry(txtEntry.getText().toString());
+            registrationProc.setIntEntry(txtIntEntry.getText().toString());
+            registrationProc.setIntExit(txtIntExit.getText().toString());
+            registrationProc.setExit(txtExit.getText().toString());
+            registrationProc.setProcState(RegistrationProc.PROC_STATE_SAVE);
+        });
 
         btnMore.setOnClickListener((v) -> {
             clearFields();
@@ -98,62 +123,37 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void save() {
-
         if (checkInputs() == 1) {
             Toast.makeText(this, "Formato de horas incorreto.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Register r = new Register(
-                txtDate.getText().toString(),
-                txtEntry.getText().toString(),
-                txtIntEntry.getText().toString(),
-                txtIntExit.getText().toString(),
-                txtExit.getText().toString()
-        );
+        Register r = new Register(txtDate.getText().toString(), txtEntry.getText().toString(), txtIntEntry.getText().toString(),
+                txtIntExit.getText().toString(), txtExit.getText().toString());
 
-        JsonUtils.createNewFile(getApplicationContext(), txtDate.getText().toString());
+        Records records = Records.getInstance();
+        records.setRecords(r);
 
-        App.setList(r);
-        String fileName = TimeUtils.getMonthYearDate(txtDate.getText().toString()) + ".json";
-        File file = new File(App.getFolder(), fileName);
-        FileUtil.saveStringToFile(file, App.getList().toString());
+        if (txtEntry.length() > 1 && txtIntEntry.length() > 1 && txtIntExit.length() > 1 && txtExit.length() > 1) {
+            clearFields();
+            String date = TimeUtils.moreDay(txtDate.getText().toString());
+            txtDate.setText(date);
+            loadForm();
+        }
 
-        String date = r.getDate();
+        records.getRecords().removeIf(re -> re.getDate().equals(r.getDate()));
+        records.setRecords(r);
+        Collections.sort(records.getRecords(), Collections.reverseOrder());
+        FileUtil.saveStringToFile(Records.getFile(), Records.getInstance().toString());
 
-//        if (txtEntry.length() > 1 && txtIntEntry.length() > 1 && txtIntExit.length() > 1 && txtExit.length() > 1) {
-//            clearFields();
-//            date = TimeUtils.moreDay(txtDate.getText().toString());
-//            txtDate.setText(date);
-//            loadForm();
-//        }
-
-//        JsonUtils.createNewFile(this, date);
-//
-//        fileContent = JsonUtils.getJsonString(this, date);
-//        records = new Gson().fromJson(fileContent, Records.class);
-//
-//        records.getRecords().removeIf(re -> re.getDate().equals(r.getDate()));
-//
-//        records.setRecords(r);
-//        Collections.sort(records.getRecords(), Collections.reverseOrder());
-//
-//        JsonUtils.updateJsonFile(this, records, date);
-//
-//        Toast.makeText(this, "Dados cadastrados com sucesso.", Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(this, "Dados cadastrados com sucesso.", Toast.LENGTH_SHORT).show();
     }
 
     private void loadForm() {
         String date = txtDate.getText().toString();
-//        fileContent = JsonUtils.getJsonString(this, date);
 
-//        records = new Gson().fromJson(fileContent, Records.class);
-
-//        if (records != null) {
-        if (App.getList() != null) {
-//            for (Register reg : records.getRecords()) {
-            for (Register reg : App.getList()) {
+        if (Records.getInstance() != null) {
+            for (Register reg : Records.getInstance().getRecords()) {
                 if (reg.getDate().equals(date)) {
                     txtEntry.setText(reg.getEntry());
                     txtIntEntry.setText(reg.getIntervalEntry());
@@ -181,44 +181,32 @@ public class RegistrationActivity extends AppCompatActivity {
         } else {
             if (txtEntry.length() == 5) {
                 if (rangeHour(Integer.parseInt(arr1[0]))) {
-                    if (rangeMin(Integer.parseInt(arr1[1]))) {
-                        r = 0;
-                    } else {
-                        r = 1;
-                    }
+                    if (rangeMin(Integer.parseInt(arr1[1]))) { r = 0; }
+                    else { r = 1; }
                 } else {
                     r = 1;
                 }
             }
             if (txtIntEntry.length() == 5) {
                 if (rangeHour(Integer.parseInt(arr2[0]))) {
-                    if (rangeMin(Integer.parseInt(arr2[1]))) {
-                        r = 0;
-                    } else {
-                        r = 1;
-                    }
+                    if (rangeMin(Integer.parseInt(arr2[1]))) { r = 0; }
+                    else { r = 1; }
                 } else {
                     r = 1;
                 }
             }
             if (txtIntExit.length() == 5) {
                 if (rangeHour(Integer.parseInt(arr3[0]))) {
-                    if (rangeMin(Integer.parseInt(arr3[1]))) {
-                        r = 0;
-                    } else {
-                        r = 1;
-                    }
+                    if (rangeMin(Integer.parseInt(arr3[1]))) { r = 0; }
+                    else { r = 1; }
                 } else {
                     r = 1;
                 }
             }
             if (txtExit.length() == 5) {
                 if (rangeHour(Integer.parseInt(arr4[0]))) {
-                    if (rangeMin(Integer.parseInt(arr4[1]))) {
-                        r = 0;
-                    } else {
-                        r = 1;
-                    }
+                    if (rangeMin(Integer.parseInt(arr4[1]))) { r = 0; }
+                    else { r = 1; }
                 } else {
                     r = 1;
                 }
@@ -228,9 +216,7 @@ public class RegistrationActivity extends AppCompatActivity {
         return r;
     }
 
-    private static boolean lengthHour(int n) {
-        return Math.max(1, n) == Math.min(n, 4);
-    }
+    private static boolean lengthHour(int n) { return Math.max(1, n) == Math.min(n, 4); }
 
     private static boolean rangeHour(int n) {
         boolean r = Math.max(0, n) == Math.min(n, 23);
@@ -271,8 +257,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private void changeFocus() {
         txtEntry.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -282,13 +267,11 @@ public class RegistrationActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-            }
+            public void afterTextChanged(Editable editable) {}
         });
         txtIntEntry.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -298,13 +281,11 @@ public class RegistrationActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-            }
+            public void afterTextChanged(Editable editable) {}
         });
         txtIntExit.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -314,13 +295,11 @@ public class RegistrationActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-            }
+            public void afterTextChanged(Editable editable) {}
         });
         txtExit.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -332,9 +311,22 @@ public class RegistrationActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-            }
+            public void afterTextChanged(Editable editable) {}
         });
+    }
+
+    private void updateUI(Message msg) {
+        if (msg.what == MSG_RENDER) {
+            clearFields();
+            String date = TimeUtils.moreDay(txtDate.getText().toString());
+            txtDate.setText(date);
+            loadForm();
+            txtEntry.requestFocus();
+        } else if (msg.what == MSG_SUCCESS) {
+            Toast.makeText(this, "Dados cadastrados com sucesso.", Toast.LENGTH_SHORT).show();
+        } else if (msg.what == MSG_FORMAT_INCORRECT) {
+            Toast.makeText(this, "Formato de horas incorreto.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
