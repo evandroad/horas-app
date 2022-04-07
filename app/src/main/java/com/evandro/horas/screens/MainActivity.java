@@ -141,6 +141,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        for ( Register r : records.getRecords() ) {
+            r.setDate(r.getDate().substring(0, 5));
+        }
+
         listView.invalidateViews();
         adapter = new RegisterAdapter(this, records);
         listView.setAdapter(adapter);
