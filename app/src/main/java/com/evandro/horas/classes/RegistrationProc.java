@@ -65,51 +65,51 @@ public class RegistrationProc extends Thread{
 
     private int checkInputs() {
         int r = 0;
-//        String str1 = txtEntry.getText().toString();
-        String[] arr1 = entry.split(":");
-//        String str2 = txtIntEntry.getText().toString();
-        String[] arr2 = intEntry.split(":");
-//        String str3 = txtIntExit.getText().toString();
-        String[] arr3 = intExit.split(":");
-//        String str4 = txtExit.getText().toString();
-        String[] arr4 = exit.split(":");
+        String[] inputs = {entry, intEntry, intExit, exit};
+//        String[] arr1 = entry.split(":");
+//        String[] arr2 = intEntry.split(":");
+//        String[] arr3 = intExit.split(":");
+//        String[] arr4 = exit.split(":");
 
         if (lengthHour(entry.length()) || lengthHour(intEntry.length()) || lengthHour(intExit.length()) ||
                 lengthHour(exit.length())) {
             r = 1;
         } else {
-            if (entry.length() == 5) {
-                if (rangeHour(Integer.parseInt(arr1[0]))) {
-                    if (rangeMin(Integer.parseInt(arr1[1]))) { r = 0; }
-                    else { r = 1; }
-                } else {
-                    r = 1;
+            for (int i = 0; i < 4; i++) {
+                String[] arr = inputs[i].split(":");
+                if (inputs[i].length() == 5) {
+                    if (rangeHour(Integer.parseInt(arr[0]))) {
+                        if (rangeMin(Integer.parseInt(arr[1]))) { r = 0; }
+                        else { r = 1; }
+                    } else {
+                        r = 1;
+                    }
                 }
             }
-            if (intEntry.length() == 5) {
-                if (rangeHour(Integer.parseInt(arr2[0]))) {
-                    if (rangeMin(Integer.parseInt(arr2[1]))) { r = 0; }
-                    else { r = 1; }
-                } else {
-                    r = 1;
-                }
-            }
-            if (intExit.length() == 5) {
-                if (rangeHour(Integer.parseInt(arr3[0]))) {
-                    if (rangeMin(Integer.parseInt(arr3[1]))) { r = 0; }
-                    else { r = 1; }
-                } else {
-                    r = 1;
-                }
-            }
-            if (exit.length() == 5) {
-                if (rangeHour(Integer.parseInt(arr4[0]))) {
-                    if (rangeMin(Integer.parseInt(arr4[1]))) { r = 0; }
-                    else { r = 1; }
-                } else {
-                    r = 1;
-                }
-            }
+//            if (intEntry.length() == 5) {
+//                if (rangeHour(Integer.parseInt(arr2[0]))) {
+//                    if (rangeMin(Integer.parseInt(arr2[1]))) { r = 0; }
+//                    else { r = 1; }
+//                } else {
+//                    r = 1;
+//                }
+//            }
+//            if (intExit.length() == 5) {
+//                if (rangeHour(Integer.parseInt(arr3[0]))) {
+//                    if (rangeMin(Integer.parseInt(arr3[1]))) { r = 0; }
+//                    else { r = 1; }
+//                } else {
+//                    r = 1;
+//                }
+//            }
+//            if (exit.length() == 5) {
+//                if (rangeHour(Integer.parseInt(arr4[0]))) {
+//                    if (rangeMin(Integer.parseInt(arr4[1]))) { r = 0; }
+//                    else { r = 1; }
+//                } else {
+//                    r = 1;
+//                }
+//            }
         }
 
         return r;

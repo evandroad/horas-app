@@ -1,35 +1,21 @@
 package com.evandro.horas.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.evandro.horas.R;
-import com.evandro.horas.classes.App;
 import com.evandro.horas.classes.RegistrationProc;
 import com.evandro.horas.classes.TimeUtils;
-import com.evandro.horas.util.FileUtil;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
-import com.google.gson.Gson;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import com.evandro.horas.classes.JsonUtils;
 import com.evandro.horas.classes.Records;
 import com.evandro.horas.classes.Register;
 
@@ -122,33 +108,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
-    private void save() {
-        if (checkInputs() == 1) {
-            Toast.makeText(this, "Formato de horas incorreto.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Register r = new Register(txtDate.getText().toString(), txtEntry.getText().toString(), txtIntEntry.getText().toString(),
-                txtIntExit.getText().toString(), txtExit.getText().toString());
-
-        Records records = Records.getInstance();
-        records.setRecords(r);
-
-        if (txtEntry.length() > 1 && txtIntEntry.length() > 1 && txtIntExit.length() > 1 && txtExit.length() > 1) {
-            clearFields();
-            String date = TimeUtils.moreDay(txtDate.getText().toString());
-            txtDate.setText(date);
-            loadForm();
-        }
-
-        records.getRecords().removeIf(re -> re.getDate().equals(r.getDate()));
-        records.setRecords(r);
-        Collections.sort(records.getRecords(), Collections.reverseOrder());
-        FileUtil.saveStringToFile(Records.getFile(), Records.getInstance().toString());
-
-        Toast.makeText(this, "Dados cadastrados com sucesso.", Toast.LENGTH_SHORT).show();
-    }
-
     private void loadForm() {
         String date = txtDate.getText().toString();
 
@@ -162,70 +121,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    private int checkInputs() {
-        int r = 0;
-        String str1 = txtEntry.getText().toString();
-        String[] arr1 = str1.split(":");
-        String str2 = txtIntEntry.getText().toString();
-        String[] arr2 = str2.split(":");
-        String str3 = txtIntExit.getText().toString();
-        String[] arr3 = str3.split(":");
-        String str4 = txtExit.getText().toString();
-        String[] arr4 = str4.split(":");
-
-        if (lengthHour(txtEntry.length()) || lengthHour(txtIntEntry.length()) || lengthHour(txtIntExit.length()) ||
-                lengthHour(txtExit.length())) {
-            r = 1;
-        } else {
-            if (txtEntry.length() == 5) {
-                if (rangeHour(Integer.parseInt(arr1[0]))) {
-                    if (rangeMin(Integer.parseInt(arr1[1]))) { r = 0; }
-                    else { r = 1; }
-                } else {
-                    r = 1;
-                }
-            }
-            if (txtIntEntry.length() == 5) {
-                if (rangeHour(Integer.parseInt(arr2[0]))) {
-                    if (rangeMin(Integer.parseInt(arr2[1]))) { r = 0; }
-                    else { r = 1; }
-                } else {
-                    r = 1;
-                }
-            }
-            if (txtIntExit.length() == 5) {
-                if (rangeHour(Integer.parseInt(arr3[0]))) {
-                    if (rangeMin(Integer.parseInt(arr3[1]))) { r = 0; }
-                    else { r = 1; }
-                } else {
-                    r = 1;
-                }
-            }
-            if (txtExit.length() == 5) {
-                if (rangeHour(Integer.parseInt(arr4[0]))) {
-                    if (rangeMin(Integer.parseInt(arr4[1]))) { r = 0; }
-                    else { r = 1; }
-                } else {
-                    r = 1;
-                }
-            }
-        }
-
-        return r;
-    }
-
-    private static boolean lengthHour(int n) { return Math.max(1, n) == Math.min(n, 4); }
-
-    private static boolean rangeHour(int n) {
-        boolean r = Math.max(0, n) == Math.min(n, 23);
-        return r;
-    }
-
-    private static boolean rangeMin(int n) {
-        boolean r = Math.max(0, n) == Math.min(n, 59);
-        return r;
     }
 
     private String getDate() {

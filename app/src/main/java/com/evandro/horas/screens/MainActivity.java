@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        for ( Register r : records.getRecords() ) {
+        for ( Register r : records ) {
             r.setDate(r.getDate().substring(0, 5));
         }
 
