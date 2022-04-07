@@ -14,12 +14,15 @@ import android.widget.Toast;
 import com.evandro.horas.R;
 import com.evandro.horas.classes.App;
 import com.evandro.horas.classes.TimeUtils;
+import com.evandro.horas.util.FileUtil;
 import com.google.gson.Gson;
 import com.evandro.horas.classes.JsonUtils;
 import com.evandro.horas.classes.Records;
 import com.evandro.horas.classes.Register;
 import com.evandro.horas.classes.RegisterAdapter;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -131,7 +134,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void fillTable() {
         String date = tvMainDate.getText().toString();
-        List<Register> records = Records.getInstance().getRecords();
+        List<Register> records = new ArrayList<>();
+
+        for ( Register r : Records.getInstance().getRecords() ) {
+            Register reg = new Register(r.getDate(), r.getEntry(), r.getIntervalEntry(), r.getIntervalExit(), r.getExit());
+            records.add(reg);
+        }
 
         for (int i = 0; i < records.size(); i++) {
             int comparison = TimeUtils.compareTo(records.get(i).getDate(), date);
@@ -172,21 +180,11 @@ public class MainActivity extends AppCompatActivity {
     private void delete(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int pos = menuInfo.position;
-//        String date = records.getRecords().get(pos).getDate();
-        String year = tvMainDate.getText().toString().substring(5, 10);
-//        date = date + year;
-//        records.getRecords().remove(pos);
-
-//        for ( Register r : records.getRecords() ) {
-//            r.setDate(r.getDate() + year);
-//        }
+        Records.getInstance().getRecords().remove(pos);
+        FileUtil.saveStringToFile(Records.getFile(), Records.getInstance().toString());
 
         adapter.notifyDataSetChanged();
-
-//        JsonUtils.updateJsonFile(this, records, date);
-
         fillTable();
-
         Toast.makeText(this, "Registro deletado com sucesso.", Toast.LENGTH_SHORT).show();
     }
 

@@ -66,10 +66,6 @@ public class RegistrationProc extends Thread{
     private int checkInputs() {
         int r = 0;
         String[] inputs = {entry, intEntry, intExit, exit};
-//        String[] arr1 = entry.split(":");
-//        String[] arr2 = intEntry.split(":");
-//        String[] arr3 = intExit.split(":");
-//        String[] arr4 = exit.split(":");
 
         if (lengthHour(entry.length()) || lengthHour(intEntry.length()) || lengthHour(intExit.length()) ||
                 lengthHour(exit.length())) {
@@ -86,30 +82,6 @@ public class RegistrationProc extends Thread{
                     }
                 }
             }
-//            if (intEntry.length() == 5) {
-//                if (rangeHour(Integer.parseInt(arr2[0]))) {
-//                    if (rangeMin(Integer.parseInt(arr2[1]))) { r = 0; }
-//                    else { r = 1; }
-//                } else {
-//                    r = 1;
-//                }
-//            }
-//            if (intExit.length() == 5) {
-//                if (rangeHour(Integer.parseInt(arr3[0]))) {
-//                    if (rangeMin(Integer.parseInt(arr3[1]))) { r = 0; }
-//                    else { r = 1; }
-//                } else {
-//                    r = 1;
-//                }
-//            }
-//            if (exit.length() == 5) {
-//                if (rangeHour(Integer.parseInt(arr4[0]))) {
-//                    if (rangeMin(Integer.parseInt(arr4[1]))) { r = 0; }
-//                    else { r = 1; }
-//                } else {
-//                    r = 1;
-//                }
-//            }
         }
 
         return r;

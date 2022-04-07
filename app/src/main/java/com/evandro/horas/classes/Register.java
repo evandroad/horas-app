@@ -12,6 +12,8 @@ public class Register implements Comparable<Register> {
     private String intervalExit;
     private String exit;
 
+    public Register() {}
+
     public Register(String date, String entry, String intervalEntry, String intervalExit, String exit) {
         this.date = date;
         this.entry = entry;
