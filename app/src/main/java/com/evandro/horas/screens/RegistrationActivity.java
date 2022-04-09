@@ -19,6 +19,8 @@ import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.evandro.horas.classes.Records;
 import com.evandro.horas.classes.Register;
 
+import java.util.Calendar;
+
 public class RegistrationActivity extends AppCompatActivity {
 
     public static final int MSG_RENDER = 0;
@@ -214,6 +216,8 @@ public class RegistrationActivity extends AppCompatActivity {
         if (msg.what == MSG_RENDER) {
             clearFields();
             String date = TimeUtils.moreDay(txtDate.getText().toString());
+            if (TimeUtils.getDayWeek(date) == Calendar.SUNDAY || TimeUtils.getDayWeek(date) == Calendar.SATURDAY)
+                date = TimeUtils.moreTwoDay(date);
             txtDate.setText(date);
             loadForm();
             txtEntry.requestFocus();

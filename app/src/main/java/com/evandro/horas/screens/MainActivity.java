@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             tvMainDate.setText(TimeUtils.getDate());
         }
+
         tvMonthYear.setText(TimeUtils.getMonthYearString(tvMainDate.getText().toString()));
         tvDayWeek.setText(TimeUtils.getDayWeekString(tvMainDate.getText().toString()));
 

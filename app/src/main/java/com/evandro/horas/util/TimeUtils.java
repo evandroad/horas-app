@@ -4,7 +4,13 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.Objects;
 
 public class TimeUtils {
 
@@ -83,10 +89,30 @@ public class TimeUtils {
         return today.toString(dtf);
     }
 
+    public static int getDayWeek(String today) {
+        GregorianCalendar gc = new GregorianCalendar();
+        try {
+            gc.setTime(Objects.requireNonNull(new SimpleDateFormat("dd/MM/yyyy", new Locale("pt", "BR"))
+                    .parse(today)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return gc.get(Calendar.DAY_OF_WEEK);
+    }
+
     public static String moreDay(String today) {
         DateTimeFormatter format = DateTimeFormat.forPattern("dd/MM/yyyy");
         DateTime date = format.parseDateTime(today);
         DateTime dateMoreDays = date.plusDays(1);
+
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
+        return dateMoreDays.toString(dtf);
+    }
+
+    public static String moreTwoDay(String today) {
+        DateTimeFormatter format = DateTimeFormat.forPattern("dd/MM/yyyy");
+        DateTime date = format.parseDateTime(today);
+        DateTime dateMoreDays = date.plusDays(2);
 
         DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
         return dateMoreDays.toString(dtf);
