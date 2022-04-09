@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.evandro.horas.R;
 import com.evandro.horas.classes.RegistrationProc;
-import com.evandro.horas.classes.TimeUtils;
+import com.evandro.horas.util.TimeUtils;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.evandro.horas.classes.Records;

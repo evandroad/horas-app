@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
@@ -12,30 +13,29 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.evandro.horas.R;
-import com.evandro.horas.classes.App;
-import com.evandro.horas.classes.TimeUtils;
+import com.evandro.horas.util.TimeUtils;
 import com.evandro.horas.util.FileUtil;
-import com.google.gson.Gson;
-import com.evandro.horas.classes.JsonUtils;
 import com.evandro.horas.classes.Records;
 import com.evandro.horas.classes.Register;
 import com.evandro.horas.classes.RegisterAdapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tvMainDate, tvOvertime, tvHourLess, tvBalanceMonth, tvTotalMonth, tvMonthYear, tvDayWeek;
-    private Button btnAdd, btnMoreDay, btnLessDay, btnMoreMonth, btnLessMonth, btnMenu;
+    private final List<Register> records = new ArrayList<>();
     private RegisterAdapter adapter;
     private ListView listView;
+    private Button btnAdd, btnMoreDay, btnLessDay, btnMoreMonth, btnLessMonth, btnMenu;
+    private TextView tvMainDate, tvOvertime, tvHourLess, tvBalanceMonth, tvTotalMonth, tvMonthYear, tvDayWeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d("Horas", "onCreate");
 
         initializeComponents();
 
@@ -133,28 +133,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fillTable() {
+        records.clear();
+        List<Register> rec = new ArrayList<>();
         String date = tvMainDate.getText().toString();
-        List<Register> records = new ArrayList<>();
 
         for ( Register r : Records.getInstance().getRecords() ) {
             Register reg = new Register(r.getDate(), r.getEntry(), r.getIntervalEntry(), r.getIntervalExit(), r.getExit());
-            records.add(reg);
-        }
-
-        for (int i = 0; i < records.size(); i++) {
-            int comparison = TimeUtils.compareTo(records.get(i).getDate(), date);
-            if(comparison == 1) {
-                records.remove(i);
-                i--;
+            int comparison = TimeUtils.compareTo(r.getDate(), date);
+            if (comparison != TimeUtils.MAJOR) {
+                records.add(r);
+                reg.setDate(reg.getDate().substring(0, 5));
+                rec.add(reg);
             }
         }
 
-        for ( Register r : records ) {
-            r.setDate(r.getDate().substring(0, 5));
-        }
-
         listView.invalidateViews();
-        adapter = new RegisterAdapter(this, records);
+        adapter = new RegisterAdapter(this, rec);
         listView.setAdapter(adapter);
         listView.setOnCreateContextMenuListener((contextMenu, view, contextMenuInfo) -> {
             contextMenu.add(Menu.NONE, 1, Menu.NONE, "Deletar");
@@ -162,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         int b, ot = 0, hl = 0, bm = 0, t = 0;
-
         for(Register r : records) {
             t = t + TimeUtils.totalMin(r.getEntry(), r.getIntervalEntry(), r.getIntervalExit(), r.getExit());
             b = TimeUtils.balanceMin(r.getEntry(), r.getIntervalEntry(), r.getIntervalExit(), r.getExit());
@@ -180,8 +173,15 @@ public class MainActivity extends AppCompatActivity {
     private void delete(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int pos = menuInfo.position;
-        Records.getInstance().getRecords().remove(pos);
-        FileUtil.saveStringToFile(Records.getFile(), Records.getInstance().toString());
+        String date = records.get(pos).getDate();
+        List<Register> list = Records.getInstance().getRecords();
+
+        for (int i = 0; i < list.size(); i++ ) {
+            if (list.get(i).getDate().equals(date))
+                list.remove(i);
+        }
+
+        FileUtil.saveStringToFile(Records.getFile(), Records.getInstance().getRecords().toString());
 
         adapter.notifyDataSetChanged();
         fillTable();
@@ -191,12 +191,10 @@ public class MainActivity extends AppCompatActivity {
     private void update(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int pos = menuInfo.position;
-//        String date = records.getRecords().get(pos).getDate();
-        String year = tvMainDate.getText().toString().substring(5, 10);
-//        date = date + year;
+        String date = records.get(pos).getDate();
         adapter.notifyDataSetChanged();
         Intent it = new Intent(this, RegistrationActivity.class);
-//        it.putExtra("date", date);
+        it.putExtra("date", date);
         startActivity(it);
         finish();
     }

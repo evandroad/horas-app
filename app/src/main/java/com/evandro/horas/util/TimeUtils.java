@@ -1,16 +1,16 @@
-package com.evandro.horas.classes;
-
-import android.util.Log;
+package com.evandro.horas.util;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.Locale;
 
 public class TimeUtils {
+
+    public static final int EQUAL = 0;
+    public static final int MAJOR = 1;
+    public static final int MINOR = -1;
 
     public static int balanceMin(String en, String ien, String iex, String ex) {
         int tot;

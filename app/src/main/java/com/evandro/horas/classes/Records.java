@@ -1,10 +1,10 @@
 package com.evandro.horas.classes;
 
 import com.evandro.horas.util.FileUtil;
+import com.evandro.horas.util.TimeUtils;
 import com.google.gson.Gson;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Records {
