@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.evandro.horas.R;
+import com.evandro.horas.classes.RegisterDAO;
 import com.evandro.horas.util.TimeUtils;
 import com.evandro.horas.util.FileUtil;
 import com.evandro.horas.classes.Records;
@@ -29,15 +30,15 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private Button btnAdd, btnMoreDay, btnLessDay, btnMoreMonth, btnLessMonth, btnMenu;
     private TextView tvMainDate, tvOvertime, tvHourLess, tvBalanceMonth, tvTotalMonth, tvMonthYear, tvDayWeek;
+    private RegisterDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("Horas", "onCreate");
-
         initializeComponents();
+        dao = new RegisterDAO(this);
 
         if(getDate() != null) {
             tvMainDate.setText(getDate());
@@ -136,17 +137,18 @@ public class MainActivity extends AppCompatActivity {
     private void fillTable() {
         records.clear();
         List<Register> rec = new ArrayList<>();
-        String date = tvMainDate.getText().toString();
+        rec = dao.getRecords();
+//        String date = tvMainDate.getText().toString();
 
-        for ( Register r : Records.getInstance().getRecords() ) {
-            Register reg = new Register(r.getDate(), r.getEntry(), r.getIntervalEntry(), r.getIntervalExit(), r.getExit());
-            int comparison = TimeUtils.compareTo(r.getDate(), date);
-            if (comparison != TimeUtils.MAJOR) {
-                records.add(r);
-                reg.setDate(reg.getDate().substring(0, 5));
-                rec.add(reg);
-            }
-        }
+//        for ( Register r : Records.getInstance().getRecords() ) {
+//            Register reg = new Register(r.getDate(), r.getEntry(), r.getIntervalEntry(), r.getIntervalExit(), r.getExit());
+//            int comparison = TimeUtils.compareTo(r.getDate(), date);
+//            if (comparison != TimeUtils.MAJOR) {
+//                records.add(r);
+//                reg.setDate(reg.getDate().substring(0, 5));
+//                rec.add(reg);
+//            }
+//        }
 
         listView.invalidateViews();
         adapter = new RegisterAdapter(this, rec);

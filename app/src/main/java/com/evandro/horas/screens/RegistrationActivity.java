@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.evandro.horas.R;
+import com.evandro.horas.classes.RegisterDAO;
 import com.evandro.horas.classes.RegistrationProc;
 import com.evandro.horas.util.TimeUtils;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
@@ -31,6 +32,7 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText txtDate, txtEntry, txtIntEntry, txtIntExit, txtExit;
     private Handler handler;
     private RegistrationProc registrationProc;
+    private RegisterDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class RegistrationActivity extends AppCompatActivity {
         txtIntEntry = findViewById(R.id.txtIntervalEntry);
         txtIntExit = findViewById(R.id.txtIntervalExit);
         txtExit = findViewById(R.id.txtExit);
+        dao = new RegisterDAO(this);
 
         SimpleMaskFormatter smfd = new SimpleMaskFormatter("NN/NN/NNNN");
         MaskTextWatcher mtwd = new MaskTextWatcher(txtDate, smfd);
@@ -78,20 +81,14 @@ public class RegistrationActivity extends AppCompatActivity {
         setFocus();
 
         btnSave.setOnClickListener((v) -> {
-            handler = new Handler() {
-                @Override
-                public void handleMessage(Message msg) {
-                    updateUI(msg);
-                }
-            };
-            registrationProc = new RegistrationProc(handler);
-            registrationProc.start();
-            registrationProc.setDate(txtDate.getText().toString());
-            registrationProc.setEntry(txtEntry.getText().toString());
-            registrationProc.setIntEntry(txtIntEntry.getText().toString());
-            registrationProc.setIntExit(txtIntExit.getText().toString());
-            registrationProc.setExit(txtExit.getText().toString());
-            registrationProc.setProcState(RegistrationProc.PROC_STATE_SAVE);
+            Register r = new Register();
+            r.setDate(txtDate.getText().toString());
+            r.setEntry(txtEntry.getText().toString());
+            r.setIntervalEntry(txtIntEntry.getText().toString());
+            r.setIntervalExit(txtIntExit.getText().toString());
+            r.setExit(txtExit.getText().toString());
+            long id = dao.add(r);
+            Toast.makeText(this, "id: " + id, Toast.LENGTH_SHORT).show();
         });
 
         btnMore.setOnClickListener((v) -> {

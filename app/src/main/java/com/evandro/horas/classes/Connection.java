@@ -6,17 +6,20 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class Connection extends SQLiteOpenHelper {
 
-    private static final String name = "bank.db";
+    private static final String name = DB.DATA_BASE;
     private static final int version = 1;
 
-    public Connection(Context context) {
-        super(context, name, null, version);
-    }
+    public Connection(Context context) { super(context, name, null, version); }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table register (data varchar(10) primary key, entry varchar(5), entryInt varchar(5), " +
-                "exitInt varchar(5), exit varchar(5))");
+        db.execSQL("create table " + DB.TABLE +"(" +
+            DB.DATE + " varchar(10) primary key," +
+            DB.ENTRY + "entry varchar(5)," +
+            DB.ENTRY_INT + "entryInt varchar(5), " +
+            DB.EXIT_INT + "exitInt varchar(5)," +
+            DB.EXIT + "exit varchar(5))"
+        );
     }
 
     @Override
