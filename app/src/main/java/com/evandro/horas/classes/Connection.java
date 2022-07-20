@@ -15,10 +15,10 @@ public class Connection extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + DB.TABLE +"(" +
             DB.DATE + " varchar(10) primary key," +
-            DB.ENTRY + "entry varchar(5)," +
-            DB.ENTRY_INT + "entryInt varchar(5), " +
-            DB.EXIT_INT + "exitInt varchar(5)," +
-            DB.EXIT + "exit varchar(5))"
+            DB.ENTRY + " varchar(5)," +
+            DB.ENTRY_INT + " varchar(5), " +
+            DB.EXIT_INT + " varchar(5)," +
+            DB.EXIT + " varchar(5))"
         );
     }
 

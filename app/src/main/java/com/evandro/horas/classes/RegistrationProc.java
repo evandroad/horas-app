@@ -40,7 +40,6 @@ public class RegistrationProc extends Thread{
 
     private void save() {
         if (checkInputs() == 1) {
-            updateUI(RegistrationActivity.MSG_FORMAT_INCORRECT, null);
             finalize();
             return;
         }
@@ -51,7 +50,6 @@ public class RegistrationProc extends Thread{
         records.setRecords(r);
 
         if (entry.length() > 1 && intEntry.length() > 1 && intExit.length() > 1 && exit.length() > 1) {
-            updateUI(RegistrationActivity.MSG_RENDER, null);
         }
 
         records.getRecords().removeIf(re -> re.getDate().equals(r.getDate()));
@@ -59,7 +57,6 @@ public class RegistrationProc extends Thread{
         Collections.sort(records.getRecords(), Collections.reverseOrder());
         FileUtil.saveStringToFile(Records.getFile(), Records.getInstance().toString());
 
-        updateUI(RegistrationActivity.MSG_SUCCESS, null);
         finalize();
     }
 

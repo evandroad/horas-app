@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -19,6 +20,7 @@ import com.evandro.horas.util.FileUtil;
 import com.evandro.horas.classes.Records;
 import com.evandro.horas.classes.Register;
 import com.evandro.horas.classes.RegisterAdapter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -157,6 +159,14 @@ public class MainActivity extends AppCompatActivity {
             contextMenu.add(Menu.NONE, 1, Menu.NONE, "Deletar");
             contextMenu.add(Menu.NONE, 2, Menu.NONE, "Atualizar");
         });
+
+        AdapterView.OnItemClickListener listener = (parent, view, position, id) -> {
+            String setTitle = parent.getItemAtPosition(position).toString();
+            Register register = new Gson().fromJson(setTitle, Register.class);
+            Log.i("horas", setTitle);
+            Log.i("horas", register.getDate());
+        };
+        listView.setOnItemClickListener(listener);
 
         int b, ot = 0, hl = 0, bm = 0, t = 0;
         for(Register r : records) {

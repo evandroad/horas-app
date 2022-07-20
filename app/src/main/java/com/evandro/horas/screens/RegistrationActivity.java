@@ -24,14 +24,8 @@ import java.util.Calendar;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    public static final int MSG_RENDER = 0;
-    public static final int MSG_SUCCESS = 1;
-    public static final int MSG_FORMAT_INCORRECT = 2;
-
     Button btnSave, btnMore, btnLess;
     EditText txtDate, txtEntry, txtIntEntry, txtIntExit, txtExit;
-    private Handler handler;
-    private RegistrationProc registrationProc;
     private RegisterDAO dao;
 
     @Override
@@ -207,22 +201,6 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {}
         });
-    }
-
-    private void updateUI(Message msg) {
-        if (msg.what == MSG_RENDER) {
-            clearFields();
-            String date = TimeUtils.moreDay(txtDate.getText().toString());
-            if (TimeUtils.getDayWeek(date) == Calendar.SUNDAY || TimeUtils.getDayWeek(date) == Calendar.SATURDAY)
-                date = TimeUtils.moreTwoDay(date);
-            txtDate.setText(date);
-            loadForm();
-            txtEntry.requestFocus();
-        } else if (msg.what == MSG_SUCCESS) {
-            Toast.makeText(this, "Dados cadastrados com sucesso.", Toast.LENGTH_SHORT).show();
-        } else if (msg.what == MSG_FORMAT_INCORRECT) {
-            Toast.makeText(this, "Formato de horas incorreto.", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override

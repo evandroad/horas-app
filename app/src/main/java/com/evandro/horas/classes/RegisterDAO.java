@@ -31,8 +31,8 @@ public class RegisterDAO {
 
     public List<Register> getRecords() {
         List<Register> records = new ArrayList<>();
-        Cursor cursor = database.query(DB.TABLE, new String[]{DB.DATE, DB.ENTRY, DB.ENTRY_INT, DB.EXIT_INT, DB.EXIT},
-                null, null, null, null, null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + DB.TABLE, null);
+
         while (cursor.moveToNext()) {
             Register r = new Register();
             r.setDate(cursor.getString(0));
